@@ -1,0 +1,31 @@
+Employee ID,Employee Name,Department,Trip Start Date,Trip End Date,Booking Type,Origin,Destination,Class of Service,Vendor Name,Nights,Distance,Distance Unit,Amount,Currency,Trip Purpose
+EMP-1042,Sarah Mitchell,Engineering,2024-01-08,2024-01-10,Air,LHR,FRA,Economy,Lufthansa,,,km,342.00,GBP,Client meeting
+EMP-1042,Sarah Mitchell,Engineering,2024-01-08,2024-01-10,HTL,,Frankfurt,Economy,Marriott Frankfurt,2,,nights,180.00,GBP,Client meeting
+EMP-1042,Sarah Mitchell,Engineering,2024-01-08,2024-01-10,CAR,Frankfurt Airport,Frankfurt City,,Sixt,,25,km,45.00,GBP,Client meeting
+EMP-2089,James Thornton,Sales,2024-01-15,2024-01-17,Air,LHR,JFK,Business,British Airways,,,km,1580.00,GBP,New York client pitch
+EMP-2089,James Thornton,Sales,2024-01-15,2024-01-17,HTL,,New York,Business,Marriott Times Square,2,,nights,620.00,GBP,New York client pitch
+EMP-2089,James Thornton,Sales,2024-01-15,2024-01-17,TRN,JFK,Manhattan,,Amtrak,,40,km,45.00,GBP,New York client pitch
+EMP-3156,Priya Kapoor,Finance,2024-01-22,2024-01-22,Air,LHR,AMS,Economy,KLM,,,km,195.00,GBP,Finance consortium
+EMP-3156,Priya Kapoor,Finance,2024-01-22,2024-01-22,CAR,Amsterdam,Schiphol,,Uber,,15,km,22.00,GBP,Finance consortium
+EMP-4201,David Chen,Engineering,2024-02-05,2024-02-08,Air,LHR,SIN,Economy,Singapore Airlines,,,km,2100.00,GBP,APAC factory audit
+EMP-4201,David Chen,Engineering,2024-02-05,2024-02-08,HTL,,Singapore,Economy,Shangri-La Singapore,3,,nights,480.00,GBP,APAC factory audit
+EMP-4201,David Chen,Engineering,2024-02-05,2024-02-08,CAR,Singapore,Jurong,,Grab,,35,km,18.00,GBP,APAC factory audit
+EMP-1042,Sarah Mitchell,Engineering,2024-02-12,2024-02-13,Air,LHR,CDG,Economy,Air France,,,km,280.00,GBP,Supplier audit
+EMP-1042,Sarah Mitchell,Engineering,2024-02-12,2024-02-13,HTL,,Paris,Economy,Ibis Paris,1,,nights,95.00,GBP,Supplier audit
+EMP-5332,Emma Williams,HR,2024-02-19,2024-02-20,Air,MAN,LHR,Economy,British Airways,,,km,155.00,GBP,HQ training
+EMP-5332,Emma Williams,HR,2024-02-19,2024-02-20,HTL,,London,Economy,Premier Inn Heathrow,1,,nights,89.00,GBP,HQ training
+EMP-2089,James Thornton,Sales,2024-03-04,2024-03-07,Air,LHR,DXB,Business,Emirates,,,km,2250.00,GBP,Middle East expansion
+EMP-2089,James Thornton,Sales,2024-03-04,2024-03-07,HTL,,Dubai,Business,Address Dubai Mall,3,,nights,1200.00,GBP,Middle East expansion
+EMP-6441,Raj Patel,Operations,2024-03-11,2024-03-11,Air,LHR,BHX,Economy,Flybe,,,km,52.00,GBP,Site visit
+EMP-6441,Raj Patel,Operations,2024-03-11,2024-03-11,CAR,Birmingham Airport,Coventry,,Enterprise,,25,km,38.00,GBP,Site visit
+EMP-3156,Priya Kapoor,Finance,2024-03-18,2024-03-21,Air,LHR,NRT,Economy,ANA,,,km,3500.00,GBP,Japan audit
+EMP-3156,Priya Kapoor,Finance,2024-03-18,2024-03-21,HTL,,Tokyo,Economy,Keio Plaza,3,,nights,520.00,GBP,Japan audit
+EMP-4201,David Chen,Engineering,2024-04-02,2024-04-04,Air,SIN,HKG,Economy,Cathay Pacific,,,km,890.00,GBP,Regional supplier meeting
+EMP-4201,David Chen,Engineering,2024-04-02,2024-04-04,HTL,,Hong Kong,Economy,Intercontinental HK,2,,nights,420.00,GBP,Regional supplier meeting
+EMP-7003,Lisa Fernandez,Marketing,2024-04-08,2024-04-10,Air,LHR,BCN,Economy,Vueling,,,km,380.00,GBP,Conference
+EMP-7003,Lisa Fernandez,Marketing,2024-04-08,2024-04-10,HTL,,Barcelona,Economy,Hotel Arts Barcelona,2,,nights,340.00,GBP,Conference
+EMP-2089,James Thornton,Sales,2024-04-15,2024-04-15,Air,LHR,CDG,Economy,Eurostar,,,km,120.00,GBP,Paris meeting
+EMP-1042,Sarah Mitchell,Engineering,2024-04-22,2024-04-26,Air,LHR,LAX,Economy,American Airlines,,,km,4850.00,GBP,US technology partner
+EMP-1042,Sarah Mitchell,Engineering,2024-04-22,2024-04-26,HTL,,Los Angeles,Economy,Marriott LA Live,4,,nights,780.00,GBP,US technology partner
+EMP-6441,Raj Patel,Operations,2024-04-29,2024-04-30,TRN,London,Edinburgh,,LNER,,630,km,185.00,GBP,Scotland facility
+EMP-6441,Raj Patel,Operations,2024-04-29,2024-04-30,HTL,,Edinburgh,Economy,Premier Inn Edinburgh,1,,nights,92.00,GBP,Scotland facility

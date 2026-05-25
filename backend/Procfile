@@ -1,0 +1,2 @@
+web: gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120
+release: python manage.py migrate --settings=breathe_esg.settings.prod && python manage.py collectstatic --noinput --settings=breathe_esg.settings.prod && python manage.py seed_reference_data --settings=breathe_esg.settings.prod
