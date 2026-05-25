@@ -51,9 +51,9 @@ export function DashboardPage() {
   }
 
   const scopePieData = [
-    { name: 'Scope 1', value: parseFloat(data.scope_totals?.scope_1_co2e_kg || '0') },
-    { name: 'Scope 2', value: parseFloat(data.scope_totals?.scope_2_co2e_kg || '0') },
-    { name: 'Scope 3', value: parseFloat(data.scope_totals?.scope_3_co2e_kg || '0') },
+    { name: 'Scope 1', value: parseFloat(data.scope_1_co2e_kg || '0') },
+    { name: 'Scope 2', value: parseFloat(data.scope_2_co2e_kg || '0') },
+    { name: 'Scope 3', value: parseFloat(data.scope_3_co2e_kg || '0') },
   ].filter(d => d.value > 0)
 
   const categoryData = data.category_breakdown
@@ -144,7 +144,8 @@ export function DashboardPage() {
               </ResponsiveContainer>
               <div className="space-y-2 mt-2">
                 {[1, 2, 3].map((s, i) => {
-                  const kg = parseFloat((data.scope_totals as Record<string, string>)[`scope_${s}_co2e_kg`] || '0')
+                  const key = `scope_${s}_co2e_kg` as keyof typeof data
+                  const kg = parseFloat((data[key] as string) || '0')
                   return (
                     <div key={s} className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2">

@@ -38,8 +38,8 @@ function EventRow({ event }: { event: import('@/types').AuditEvent }) {
               {event.action_display}
             </span>
             <span className="text-sm font-medium">{event.user_name}</span>
-            {event.metadata?.count && (
-              <span className="text-xs text-muted-foreground">({event.metadata.count as number} records)</span>
+            {event.metadata?.count != null && (
+              <span className="text-xs text-muted-foreground">({String(event.metadata.count)} records)</span>
             )}
           </div>
           <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
@@ -47,14 +47,14 @@ function EventRow({ event }: { event: import('@/types').AuditEvent }) {
           </span>
         </div>
 
-        {event.metadata?.file_name && (
+        {event.metadata?.file_name != null && (
           <p className="text-xs text-muted-foreground mt-1">
-            File: {event.metadata.file_name as string}
+            File: {String(event.metadata.file_name)}
           </p>
         )}
-        {event.metadata?.notes && (
+        {event.metadata?.notes != null && (
           <p className="text-xs text-muted-foreground mt-1 italic">
-            Note: "{event.metadata.notes as string}"
+            Note: &ldquo;{String(event.metadata.notes)}&rdquo;
           </p>
         )}
 
