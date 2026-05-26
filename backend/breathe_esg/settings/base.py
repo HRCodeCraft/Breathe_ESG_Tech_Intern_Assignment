@@ -77,6 +77,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [d for d in [BASE_DIR / 'frontend_build'] if d.exists()]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Serve the React SPA assets (e.g. /assets/index-xxx.js) directly at root URL.
+# WhiteNoise middleware intercepts these before Django's URL router, so the
+# SPAView catch-all never sees /assets/* requests.
+WHITENOISE_ROOT = BASE_DIR / 'frontend_build' if (BASE_DIR / 'frontend_build').exists() else None
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
