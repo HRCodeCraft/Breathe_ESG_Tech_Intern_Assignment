@@ -1,0 +1,17 @@
+{
+  "name": "Breathe ESG",
+  "short_name": "Breathe ESG",
+  "description": "Emissions Ingestion & Review Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#166534",
+  "icons": [
+    {
+      "src": "/leaf.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
