@@ -55,13 +55,13 @@ cp -r "$SCRIPT_DIR/frontend/dist" "$SCRIPT_DIR/backend/frontend_build"
 
 echo "==> Running database migrations..."
 cd "$SCRIPT_DIR/backend"
-python manage.py migrate -v 0
+python3 manage.py migrate -v 0
 
 echo "==> Seeding reference data and demo users..."
-python manage.py seed_reference_data
+python3 manage.py seed_reference_data
 
 echo "==> Collecting static files..."
-python manage.py collectstatic --noinput -v 0
+python3 manage.py collectstatic --noinput -v 0
 
 echo ""
 echo "========================================="
@@ -69,4 +69,4 @@ echo " App ready at http://localhost:8000"
 echo " Login: analyst / analyst123"
 echo "========================================="
 echo ""
-python manage.py runserver
+python3 manage.py runserver
