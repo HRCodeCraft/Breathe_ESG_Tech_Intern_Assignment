@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-// In production, everything is served from the same origin — /api is relative.
-// In dev, Vite proxies /api → localhost:8000.
-const API_BASE = '/api'
+// VITE_API_URL is set at build time.
+// Railway single-service: VITE_API_URL=/api  (same-origin, default)
+// Vercel + Railway split:  VITE_API_URL=https://your-backend.up.railway.app/api
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 export const api = axios.create({
   baseURL: API_BASE,

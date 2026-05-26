@@ -1,145 +1,143 @@
-# Deployment Guide — Railway (Single Service)
+# Deployment Guide
 
-Everything runs from one URL. Django serves the built React frontend, all API endpoints, and static files. No Vercel, no separate frontend host.
+Two options:
+
+| Option | URLs | Best for |
+|---|---|---|
+| **Railway (single service)** | One URL — Django serves everything | Simplest, recommended |
+| **Vercel + Railway (split)** | Frontend on Vercel, backend on Railway | If you prefer Vercel's global CDN |
 
 ---
 
-## Step 1 — Push to GitHub
+## Option A — Railway (Single Service, Recommended)
+
+Everything from one URL. Django serves the React build, all API endpoints, and static files.
+
+### Step 1 — Push to GitHub
 
 ```bash
-# In the project root (already has a git commit):
 git remote add origin https://github.com/YOUR_USERNAME/breathe-esg.git
 git push -u origin main
 ```
 
-Make the repo **public** so the reviewers can access it without authentication.
+Make the repo **public** so reviewers can access it.
 
----
+### Step 2 — Create Railway Project
 
-## Step 2 — Create a Railway Project
+1. [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo**
+2. Select your repo. Railway detects `nixpacks.toml` automatically.
 
-1. Go to [railway.app](https://railway.app) and log in (GitHub login works).
-2. Click **New Project → Deploy from GitHub repo**.
-3. Select your `breathe-esg` repo. Railway will detect `nixpacks.toml` at the root automatically.
-
-**What Railway does during build** (defined in `nixpacks.toml`):
+What Railway does (from `nixpacks.toml`):
 ```
-setup:   installs Python 3.11 + Node 20
-install: npm ci (frontend) + pip install (backend)
-build:   npm run build → copies dist → collectstatic
+setup:   Python 3.11 + Node 20
+install: npm ci  +  pip install
+build:   npm run build → copy dist → collectstatic
 start:   gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT
 ```
 
----
+### Step 3 — Add PostgreSQL
 
-## Step 3 — Add PostgreSQL
+Railway dashboard → **+ New → Database → PostgreSQL**  
+`DATABASE_URL` is injected automatically — do not set it manually.
 
-1. In your Railway project dashboard, click **+ New** → **Database** → **PostgreSQL**.
-2. Railway automatically injects `DATABASE_URL` into your service environment. No manual copy needed.
+### Step 4 — Environment Variables
 
----
-
-## Step 4 — Set Environment Variables
-
-In Railway dashboard → your service → **Variables**, add:
+Railway dashboard → your service → **Variables**:
 
 | Variable | Value |
 |---|---|
-| `SECRET_KEY` | Generate: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
-| `ALLOWED_HOSTS` | `your-app.up.railway.app` (Railway shows this under Settings → Domains) |
+| `SECRET_KEY` | `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
+| `ALLOWED_HOSTS` | `your-app.up.railway.app` |
 | `CORS_ALLOWED_ORIGINS` | `https://your-app.up.railway.app` |
 | `DEBUG` | `False` |
 | `DJANGO_SETTINGS_MODULE` | `breathe_esg.settings.prod` |
 
-`DATABASE_URL` is injected automatically by the PostgreSQL plugin — do not add it manually.
+### Step 5 — First Deploy
 
----
-
-## Step 5 — First Deploy
-
-Railway re-deploys on every push. The **release command** (in `backend/Procfile`) runs automatically before the server starts:
-
+The `Procfile` release command runs before the server starts:
 ```
 python manage.py migrate
-python manage.py collectstatic --noinput  
-python manage.py seed_reference_data      # creates demo users + emission factors
+python manage.py collectstatic --noinput
+python manage.py seed_reference_data    ← creates demo users + emission factors
 ```
 
-After ~2 minutes the deploy completes. Open your Railway domain:
+After ~2 minutes: `https://your-app.up.railway.app`  
+Login: `analyst` / `analyst123` · `admin` / `admin123`
 
-```
-https://your-app.up.railway.app
-```
-
-Login: `analyst` / `analyst123`  
-Admin: `admin` / `admin123`
-
----
-
-## Step 6 — Update README with Live URL
-
-Once deployed, edit `README.md` line 5:
+### Step 6 — Update README
 
 ```markdown
-**Live demo**: https://your-app.up.railway.app
-```
-
-Push the change:
-
-```bash
-git add README.md
-git commit -m "Add live demo URL"
-git push
+**Live demo** → https://your-app.up.railway.app
 ```
 
 ---
 
-## Step 7 — Share with Reviewers
+## Option B — Vercel (Frontend) + Railway (Backend)
 
-Email `saurav@breatheesg.com`, `rahul@breatheesg.com`, `shivang@breatheesg.com`:
+Frontend on Vercel's CDN, backend API on Railway.
 
+### Backend — Railway
+
+Follow Option A Steps 1–5, but also add:
+
+| Variable | Value |
+|---|---|
+| `CORS_ALLOWED_ORIGINS` | `https://your-vercel-app.vercel.app` |
+
+### Frontend — Vercel
+
+1. [vercel.com](https://vercel.com) → **New Project → Import Git Repository**
+2. Vercel auto-detects the `vercel.json` at root.
+3. In Vercel **Environment Variables**, add:
+
+| Variable | Value |
+|---|---|
+| `VITE_API_URL` | `https://your-railway-app.up.railway.app/api` |
+
+4. Deploy. Vercel builds the frontend and serves it at `your-app.vercel.app`.
+5. All `/api/*` calls from the browser go directly to the Railway backend.
+
+> **Note:** CORS must be configured on the backend to allow the Vercel domain. The `CORS_ALLOWED_ORIGINS` variable handles this.
+
+---
+
+## Local Setup
+
+```bash
+bash setup_and_run.sh
 ```
-Subject: Breathe ESG Tech Intern Assignment — Harshit
 
-GitHub: https://github.com/YOUR_USERNAME/breathe-esg
-Live:   https://your-app.up.railway.app
-Login:  analyst / analyst123  (also admin / admin123)
-
-Local setup (single command):
-  bash setup_and_run.sh
-  → opens at http://localhost:8000
-```
+Opens at **http://localhost:8000**. Requires Python 3.10+ and Node 18+.
 
 ---
 
 ## Troubleshooting
 
-**Build fails at collectstatic**
-- Check `DJANGO_SETTINGS_MODULE=breathe_esg.settings.prod` is set in Railway Variables.
-- `SECRET_KEY` must be set — prod settings will raise if missing.
+**Build fails at collectstatic**  
+→ `DJANGO_SETTINGS_MODULE=breathe_esg.settings.prod` must be set. `SECRET_KEY` must not be empty.
 
-**500 error after deploy**
-- Check Railway **Deploy Logs** tab for the Python traceback.
-- Most common: `ALLOWED_HOSTS` not matching the Railway domain. Add both `your-app.up.railway.app` and `*.up.railway.app`.
+**500 on first request**  
+→ Check Railway Deploy Logs. Most likely: `ALLOWED_HOSTS` doesn't match the Railway domain.
 
-**Database tables missing**
-- The Procfile `release` command runs migrations. If it failed, check the release logs separately in Railway (different from deploy logs).
-- You can re-run manually: Railway → your service → **Run Command** → `cd backend && python manage.py migrate --settings=breathe_esg.settings.prod`
+**Database tables missing**  
+→ Migration ran but failed. Railway → your service → **Run Command**:  
+`cd backend && python manage.py migrate --settings=breathe_esg.settings.prod`
 
-**Frontend shows "Frontend not built yet"**
-- The React build step failed. Check build logs for npm errors.
-- Common cause: `node_modules` was cached but `package-lock.json` changed. Force a fresh deploy: Railway → Settings → **Clear Build Cache** → redeploy.
+**Blank page on frontend (JS loads, nothing renders)**  
+→ Check browser DevTools console for errors. Most likely: `VITE_API_URL` is wrong or CORS is blocking the API call.
+
+**npm install fails**  
+→ Force fresh: Railway → Settings → **Clear Build Cache** → redeploy.
 
 ---
 
-## Architecture Summary
+## Architecture
 
 ```
 Browser
-  │
-  ├── GET /api/*          → Django REST Framework (DRF)
-  ├── GET /static/*       → WhiteNoise (compressed, cached)
-  └── GET /*              → Django serves frontend/index.html → React Router
+  ├── /api/*       → Django REST Framework
+  ├── /assets/*    → WhiteNoise (from WHITENOISE_ROOT = frontend_build/)
+  └── /*           → SPAView → index.html → React Router
 ```
 
-Single Railway service. Single URL. No CORS issues.
+Single Railway service. Single URL. No CORS. WhiteNoise serves JS/CSS assets with correct MIME types and infinite browser cache (`Cache-Control: max-age=31536000`).
