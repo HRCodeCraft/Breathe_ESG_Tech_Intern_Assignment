@@ -38,7 +38,7 @@ def _detect_outliers(records: list[EmissionRecord]) -> list[str]:
     return outlier_ids
 
 
-def run_ingestion(run: IngestionRun, file_bytes: bytes, user) -> IngestionRun:
+def run_ingestion(run: IngestionRun, file_bytes: bytes, user, ip_address: str = '') -> IngestionRun:
     """
     Execute full ingestion pipeline for a given IngestionRun.
     Mutates run.status and run.error_log in place, saves to DB.
@@ -63,6 +63,7 @@ def run_ingestion(run: IngestionRun, file_bytes: bytes, user) -> IngestionRun:
         action=AuditEvent.Action.RUN_STARTED,
         ingestion_run_id=run.id,
         metadata={'source_type': run.source_type, 'file_name': run.file_name},
+        ip_address=ip_address,
     )
 
     parser = PARSER_MAP.get(run.source_type)
@@ -153,13 +154,9 @@ def run_ingestion(run: IngestionRun, file_bytes: bytes, user) -> IngestionRun:
             created_records.append(record)
             success_count += 1
 
-    # Post-run outlier detection
+    # Post-run outlier detection — update per-record to preserve existing flags
     outlier_ids = _detect_outliers(created_records)
     if outlier_ids:
-        EmissionRecord.objects.filter(id__in=outlier_ids).update(
-            flags=_append_flag_to_records(outlier_ids, EmissionRecord.Flag.OUTLIER)
-        )
-        # Update individually to preserve existing flags
         for rec in created_records:
             if str(rec.id) in outlier_ids:
                 if EmissionRecord.Flag.OUTLIER not in rec.flags:
@@ -189,6 +186,7 @@ def run_ingestion(run: IngestionRun, file_bytes: bytes, user) -> IngestionRun:
             'errors': len(error_log),
             'skipped': skipped_count,
         },
+        ip_address=ip_address,
     )
 
     return run

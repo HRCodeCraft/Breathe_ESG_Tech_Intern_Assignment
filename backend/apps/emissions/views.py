@@ -12,6 +12,13 @@ from .filters import EmissionRecordFilter
 from apps.audit.models import AuditEvent
 
 
+def _get_client_ip(request):
+    forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded:
+        return forwarded.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
+
+
 class EmissionRecordListView(generics.ListAPIView):
     serializer_class = EmissionRecordSerializer
     permission_classes = [IsAuthenticated]
@@ -47,6 +54,7 @@ class EmissionRecordDetailView(generics.RetrieveUpdateAPIView):
             emission_record_id=instance.id,
             before_state=before,
             after_state=EmissionRecordSerializer(instance).data,
+            ip_address=_get_client_ip(self.request),
         )
 
 
@@ -73,6 +81,7 @@ class RecordApproveView(APIView):
             emission_record_id=record.id,
             before_state={'status': before_status},
             after_state={'status': record.status},
+            ip_address=_get_client_ip(request),
         )
         return Response(EmissionRecordSerializer(record).data)
 
@@ -100,6 +109,7 @@ class RecordFlagView(APIView):
             emission_record_id=record.id,
             before_state={'status': before_status},
             after_state={'status': record.status},
+            ip_address=_get_client_ip(request),
         )
         return Response(EmissionRecordSerializer(record).data)
 
@@ -145,6 +155,7 @@ class BulkActionView(APIView):
             user=request.user,
             action=audit_action_map[action],
             metadata={'count': count, 'ids': [str(i) for i in ids], 'notes': notes},
+            ip_address=_get_client_ip(request),
         )
         return Response({'updated': count})
 

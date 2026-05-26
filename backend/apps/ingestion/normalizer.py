@@ -161,10 +161,9 @@ def compute_emissions(row: ParsedRow) -> dict:
         factor_source = ef['source']
 
         if unit_norm != factor_unit:
-            # Try to re-normalize to match factor unit
-            qty_for_factor, _ = normalize_unit(qty_norm, unit_norm)
-            # If still mismatch, flag it
-            if unit_norm != factor_unit:
+            # Try one more conversion pass toward the factor's expected unit
+            qty_for_factor, converted_unit = normalize_unit(qty_norm, unit_norm)
+            if converted_unit != factor_unit:
                 flags.append(EmissionRecord.Flag.UNIT_MISMATCH)
         else:
             qty_for_factor = qty_norm

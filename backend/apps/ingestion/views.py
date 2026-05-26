@@ -9,6 +9,13 @@ from .serializers import IngestionRunSerializer, IngestionUploadSerializer
 from .pipeline import run_ingestion
 
 
+def _get_client_ip(request):
+    forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded:
+        return forwarded.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR', '')
+
+
 class IngestionRunListView(generics.ListAPIView):
     serializer_class = IngestionRunSerializer
     permission_classes = [IsAuthenticated]
@@ -44,7 +51,7 @@ class IngestionUploadView(APIView):
             raw_file=uploaded_file,
         )
         try:
-            run = run_ingestion(run, file_bytes, request.user)
+            run = run_ingestion(run, file_bytes, request.user, ip_address=_get_client_ip(request))
         except Exception as e:
             run.status = IngestionRun.Status.FAILED
             run.error_log = [{'error': str(e)}]
