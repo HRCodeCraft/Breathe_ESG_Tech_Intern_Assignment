@@ -1,2 +1,2 @@
-web: python3 -m gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120
-release: python3 manage.py migrate --settings=breathe_esg.settings.prod && python3 manage.py collectstatic --noinput --settings=breathe_esg.settings.prod && python3 manage.py seed_reference_data --settings=breathe_esg.settings.prod
+web: /app/.venv/bin/gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120
+release: /app/.venv/bin/python manage.py migrate --settings=breathe_esg.settings.prod && /app/.venv/bin/python manage.py seed_reference_data --settings=breathe_esg.settings.prod

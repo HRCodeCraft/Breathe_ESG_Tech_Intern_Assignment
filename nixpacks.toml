@@ -5,15 +5,16 @@ aptPkgs = ["python3", "python3-pip", "python3-venv"]
 [phases.install]
 cmds = [
   "cd frontend && npm ci",
-  "pip3 install -r backend/requirements.txt"
+  "python3 -m venv /app/.venv",
+  "/app/.venv/bin/pip install -r backend/requirements.txt"
 ]
 
 [phases.build]
 cmds = [
   "cd frontend && VITE_API_URL=/api npm run build",
   "cp -r frontend/dist backend/frontend_build",
-  "cd backend && python3 manage.py collectstatic --noinput --settings=breathe_esg.settings.prod"
+  "cd backend && /app/.venv/bin/python manage.py collectstatic --noinput --settings=breathe_esg.settings.prod"
 ]
 
 [start]
-cmd = "cd backend && gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120"
+cmd = "cd backend && /app/.venv/bin/gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120"
