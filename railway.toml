@@ -3,4 +3,4 @@ builder = "NIXPACKS"
 nixpacksConfigPath = "nixpacks.toml"
 
 [deploy]
-startCommand = "cd backend && gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120"
+startCommand = "cd backend && /app/.venv/bin/gunicorn breathe_esg.wsgi --workers 2 --bind 0.0.0.0:$PORT --timeout 120"
