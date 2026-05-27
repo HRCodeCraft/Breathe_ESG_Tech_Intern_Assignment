@@ -2,7 +2,7 @@
 
 > Ingest emissions data from SAP, utility portals, and corporate travel platforms. Normalize it. Review it. Sign it off. One URL.
 
-**Live demo** → _[Add Railway URL after deployment]_  
+**Live demo** → https://breatheesgtechinternassignment-production.up.railway.app  
 **Login** `analyst` / `analyst123` &nbsp;|&nbsp; `admin` / `admin123`
 
 ---
