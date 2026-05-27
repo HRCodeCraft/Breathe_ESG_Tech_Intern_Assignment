@@ -48,8 +48,6 @@ In local dev, Vite's proxy forwards `/api` to `localhost:8000` for hot-reload.
 
 | File | What's in it |
 |---|---|
-| [GUIDE.md](./GUIDE.md) | Full technical + business deep-dive. Every question a reviewer might ask, answered. |
-| [DEPLOY.md](./DEPLOY.md) | Step-by-step Railway and Vercel deployment |
 | [MODEL.md](./MODEL.md) | Data model — every field justified |
 | [DECISIONS.md](./DECISIONS.md) | Why SAP CSV, Green Button, Concur — and what I'd ask the PM |
 | [TRADEOFFS.md](./TRADEOFFS.md) | What's not built and what it would take to add it |
